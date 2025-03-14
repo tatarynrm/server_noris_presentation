@@ -4,9 +4,14 @@ const express = require("express");
 const { main_keyboard } = require("./telegram_bot/keyboards");
 const bot = require("./telegram_bot");
 const app = express();
+const cors = require('cors')
 
+// Routes
+const ordersFromSiteRoutes = require('./routes/ordersRoute');
 
-
+app.use(cors())
+app.use(express.json())
+app.use('/orders',ordersFromSiteRoutes)
 
 // Налаштування сервера Express
 app.get("/", (req, res) => {
