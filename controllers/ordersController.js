@@ -1,4 +1,5 @@
 const pool = require("../db/pool");
+const bot = require("../telegram_bot");
 
 
 
@@ -7,7 +8,7 @@ class OrderController {
   // Створення нового замовлення
   static async createOrder(req, res) {
     const { categories, email, name, phone } = req.body;
-console.log(req.body);
+
 
     const query = `
       INSERT INTO orders_from_noris_development (categories,email,name,phone)
@@ -18,6 +19,13 @@ console.log(req.body);
     try {
       
       const result = await pool.query(query, [categories, email, name, phone]);
+console.log('dsdssd',result.rows[0]);
+const data = result.rows[0]
+if (data) {
+     await bot.telegram.sendMessage(451819549,`Прийшла заявка з сайту:\n${data.email}\n\n${data.name}\n\n${data.phone}`)
+     await bot.telegram.sendMessage(282039969,`${data.email} --- ${data.name} --- ${data.phone}`)
+}
+  
       res.status(201).json(result.rows[0]);  // Відправляємо створене замовлення
     } catch (err) {
       console.error('Помилка при створенні замовлення:', err);
