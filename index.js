@@ -9,7 +9,11 @@ const cors = require('cors')
 // Routes
 const ordersFromSiteRoutes = require('./routes/ordersRoute');
 
-app.use(cors())
+app.use(cors({
+  origin: '*',  // Дозволити всі домени
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Дозволити певні HTTP методи
+  allowedHeaders: ['Content-Type', 'Authorization'],  // Дозволити певні заголовки
+}));
 app.use(express.json())
 app.use('/orders',ordersFromSiteRoutes)
 
